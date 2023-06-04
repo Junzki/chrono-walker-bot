@@ -31,6 +31,15 @@ class AutoLoginProvider(object):
 
         self.driver.get(url)
 
+    def check_logged_in(self) -> bool:
+        try:
+            self.driver.find_element('id', 'mainmenu')
+        except selenium.common.exceptions.NoSuchElementException:
+            return False
+
+        return True
+
+
     def check_in(self) -> str | None:
         try:
             entry = self.driver.find_element('id', 'signed')
@@ -59,7 +68,7 @@ class AutoLoginProvider(object):
         try:
             self.driver.find_element('id', 'sp_signed')
         except selenium.common.exceptions.NoSuchElementException:
-            raise Exception("Not signed in")
+            return False
 
         return True
 
@@ -67,6 +76,10 @@ class AutoLoginProvider(object):
         record = SiteAccessRecord.objects.create(site=site)
 
         self.access(site)
+
+        record.succeed = self.check_logged_in()
+        record.save()
+
         if not self.check_checked_in():
             self.check_in()
 

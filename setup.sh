@@ -22,7 +22,7 @@ cleanup() {
 }
 
 install_geckodriver
-collect_static
+#collect_static
 
 
 cleanup
