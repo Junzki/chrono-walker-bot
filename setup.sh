@@ -9,7 +9,7 @@ install_geckodriver() {
     gecko_driver="misc/geckodriver-v0.33.0-linux-aarch64.tar.gz"
   fi
 
-  tar -zxvf "${gecko_driver}" /usr/local/bin
+  tar -zxvf "${gecko_driver}" -C /usr/local/bin
 }
 
 
