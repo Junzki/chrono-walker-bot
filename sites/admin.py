@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from django.contrib import admin
+from worker.provider import WorkPublisher
 from .models import Site, SiteCookie, SiteAccessRecord
 from .providers.auto_login import AutoLoginProvider
 
@@ -16,12 +17,17 @@ class SiteAdmin(admin.ModelAdmin):
     search_fields = ('name', 'url')
 
     def automate_sites(self, request, queryset):
-        p = AutoLoginProvider(preserve_driver=True)
+        publisher = WorkPublisher()
+        p = AutoLoginProvider(lazy=True)
+        site_id_list = [site.id for site in queryset]
 
-        for site in queryset:
-            p.automate(site)
+        options = dict()
+        kwargs = dict(
+            site_id_list=site_id_list,
+            shutdown_on_finish=True
+        )
 
-        p.shutdown()
+        publisher.publish(p.batch_handle, options, **kwargs)
 
     automate_sites.description = 'Automate selected sites'
 
