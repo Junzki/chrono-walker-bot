@@ -14,4 +14,5 @@ RUN apt-get update && \
     apt-get clean && \
     pip install -U pip && \
     pip install -r ./requirements.txt && \
+    pip install uWSGI && \
     bash ./setup.sh

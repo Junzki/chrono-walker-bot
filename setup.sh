@@ -14,6 +14,10 @@ install_geckodriver() {
 
 
 collect_static() {
+  if [[ ! -d "static" ]]; then
+    mkdir static
+  fi
+
   python manage.py collectstatic --noinput
 }
 
@@ -22,7 +26,7 @@ cleanup() {
 }
 
 install_geckodriver
-#collect_static
+collect_static
 
 
 cleanup
