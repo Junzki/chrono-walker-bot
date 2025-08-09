@@ -1,9 +1,12 @@
-# -*- coding:utf-8 -*-
-from chrono_manager.settings import *
+# -*- coding: utf-8 -*-
+
+import os
+
+from .settings import *
 
 DEBUG = False
 
-SECRET_KEY = "your-secret-key"
+SECRET_KEY = os.environ.get("SECRET_KEY", "SECRET_KEY_TO_REPLACE")
 
 DATABASES = {
     'default': {
