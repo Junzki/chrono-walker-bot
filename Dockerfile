@@ -1,18 +1,8 @@
 FROM docker.io/python:3.13-bullseye
 
-ARG PIP_INDEX_URL=""
-
 WORKDIR /usr/src/app
 
-COPY misc/sources.list /etc/apt/sources.list
-
 COPY . .
-
-# Set ENV PIP_INDEX_URL only if ARG is not empty
-RUN if [ -n "$PIP_INDEX_URL" ]; then \
-    echo "PIP_INDEX_URL=$PIP_INDEX_URL" >> /etc/environment; \
-    export PIP_INDEX_URL="$PIP_INDEX_URL"; \
-fi
 
 RUN apt-get update && \
     apt-get upgrade -y && \
