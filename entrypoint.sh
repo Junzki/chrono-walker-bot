@@ -8,4 +8,5 @@ export DJANGO_SUPERUSER_PASSWORD=change-me-admin-password
 python manage.py createsuperuser --no-input
 
 
+export DJANGO_SETTINGS_MODULE=chrono_manager.settings_prod 
 uwsgi --ini uwsgi.ini
