@@ -22,4 +22,4 @@ USER uwsgi
 EXPOSE 8000
 VOLUME [ "/usr/src/app/data" ]
 
-ENTRYPOINT [ "entrypoint.sh" ]
+ENTRYPOINT [ "/usr/src/app/entrypoint.sh" ]

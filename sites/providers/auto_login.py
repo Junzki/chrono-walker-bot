@@ -1,8 +1,10 @@
 # -*- coding:utf-8 -*-
 import typing as ty
 
+from django.conf import settings
 import selenium.common.exceptions
 from selenium import webdriver
+from selenium.webdriver.firefox.service import Service as FirefoxService
 from selenium.webdriver.firefox.options import Options as FirefoxOptions
 from sites.models import Site, SiteAccessRecord
 
@@ -13,7 +15,13 @@ class AutoLoginProvider(object):
         options = FirefoxOptions()
         options.headless = True
 
-        self.driver = webdriver.Firefox(options=options)
+        service_kwargs = dict()
+        if settings.GECKO_DRIVER_PATH:
+            service_kwargs['executable_path'] = str(settings.GECKO_DRIVER_PATH)
+
+        service = FirefoxService(**service_kwargs)
+
+        self.driver = webdriver.Firefox(options=options, service=service)
         self.preserve_driver = preserve_driver
 
     def access(self, site: Site):
