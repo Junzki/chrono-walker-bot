@@ -22,4 +22,4 @@ USER uwsgi
 EXPOSE 8000
 VOLUME [ "/usr/src/app/data" ]
 
-CMD ["uwsgi", "--ini", "uwsgi.ini"]
+ENTRYPOINT [ "entrypoint.sh" ]
