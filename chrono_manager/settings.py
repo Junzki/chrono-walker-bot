@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path
+from decouple import config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -118,7 +119,8 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
-STATIC_URL = 'static/'
+#STATIC_URL = 'static/'
+STATIC_URL = 'https://static.lgtkom.dev/'
 STATIC_ROOT = BASE_DIR / 'static'
 
 # Default primary key field type
@@ -127,3 +129,51 @@ STATIC_ROOT = BASE_DIR / 'static'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 GECKO_DRIVER_PATH = BASE_DIR / 'misc' / 'geckodriver'
+
+# Cloudflare R2 Credentials
+# Get these from your R2 dashboard
+R2_ACCOUNT_ID = config('R2_ACCOUNT_ID')
+R2_ACCESS_KEY_ID = config('R2_ACCESS_KEY_ID')
+R2_SECRET_ACCESS_KEY = config('R2_SECRET_ACCESS_KEY')
+R2_BUCKET_NAME = config('R2_BUCKET_NAME')
+
+# Standard AWS settings adapted for R2
+AWS_ACCESS_KEY_ID = R2_ACCESS_KEY_ID
+AWS_SECRET_ACCESS_KEY = R2_SECRET_ACCESS_KEY
+AWS_STORAGE_BUCKET_NAME = R2_BUCKET_NAME
+
+# This is the crucial part: Point boto3 to the R2 API endpoint
+AWS_S3_ENDPOINT_URL = f'https://{R2_ACCOUNT_ID}.r2.cloudflarestorage.com'
+
+# The public URL for your assets.
+# Note: Use your custom domain if you connect Cloudflare CDN.
+AWS_S3_CUSTOM_DOMAIN = 'static.lgtkom.dev'
+# Or use the default public R2 URL if you've enabled it:
+# AWS_S3_CUSTOM_DOMAIN = f'pub-{R2_BUCKET_NAME}.r2.dev'
+
+
+# R2 is region-less, but 'auto' is a good default
+AWS_S3_REGION_NAME = 'auto'
+
+# General settings to improve performance and security
+AWS_S3_OBJECT_PARAMETERS = {
+    'CacheControl': 'max-age=86400', # Cache files for 1 day
+}
+AWS_DEFAULT_ACL = None # R2 buckets are private by default, access is via policies
+AWS_S3_FILE_OVERWRITE = False # Recommended to prevent accidental overwrites
+
+# Django Storages settings
+# These tell Django to use the S3Boto3Storage engine, which is now configured for R2
+STORAGES = {
+    "staticfiles": {
+        "BACKEND": "storages.backends.s3.S3Storage",
+        "OPTIONS": {
+            "access_key": R2_ACCESS_KEY_ID,
+            "secret_key": R2_SECRET_ACCESS_KEY,
+            "bucket_name": R2_BUCKET_NAME,
+            "custom_domain": AWS_S3_CUSTOM_DOMAIN,
+            "endpoint_url": AWS_S3_ENDPOINT_URL,
+            "region_name": AWS_S3_REGION_NAME,
+        },
+    },
+}

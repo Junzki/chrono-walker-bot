@@ -23,6 +23,13 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
+      
+      - name: Create Docker secrets
+        run: |
+          echo "${{ secrets.R2_ACCESS_KEY_ID }}" > r2_access_key_id.txt
+          echo "${{ secrets.R2_SECRET_ACCESS_KEY }}" > r2_secret_access_key.txt
+          echo "${{ secrets.R2_BUCKET_NAME }}" > r2_bucket_name.txt
+          echo "${{ secrets.R2_ACCOUNT_ID }}" > r2_account_id.txt
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
@@ -33,6 +40,11 @@ jobs:
           tags: |
             ${{ secrets.DOCKERHUB_USERNAME }}/chrono-walker-bot:latest
             ${{ secrets.DOCKERHUB_USERNAME }}/chrono-walker-bot:${{ github.event.release.tag_name }}
+          secrets: |
+            id=r2_access_key_id,src=r2_access_key_id.txt
+            id=r2_secret_access_key,src=r2_secret_access_key.txt
+            id=r2_bucket_name,src=r2_bucket_name.txt
+            id=r2_account_id,src=r2_account_id.txt
         if: github.event_name == 'release'
 
       - name: Build and push Docker image (latest only)
@@ -42,4 +54,9 @@ jobs:
           file: ./Dockerfile
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/chrono-walker-bot:latest
+          secrets: |
+            id=r2_access_key_id,src=r2_access_key_id.txt
+            id=r2_secret_access_key,src=r2_secret_access_key.txt
+            id=r2_bucket_name,src=r2_bucket_name.txt
+            id=r2_account_id,src=r2_account_id.txt
         if: github.event_name != 'release'

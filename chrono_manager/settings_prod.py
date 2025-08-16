@@ -23,3 +23,6 @@ try:
     CSRF_TRUSTED_ORIGINS = os.environ.get("CSRF_TRUSTED_ORIGINS").split(",")
 except AttributeError as e:
     pass
+
+STATIC_URL = 'https://static.lgtkom.dev/static/'
+MEDIA_URL = 'https://static.lgtkom.dev/media/'
