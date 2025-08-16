@@ -23,6 +23,9 @@ RUN --mount=type=secret,id=r2_access_key_id \
     export R2_ACCOUNT_ID=$(cat /run/secrets/r2_account_id) && \
     echo "Secrets loaded"
 
+RUN python manage.py compilemessages && \
+    python manage.py collectstatic --noinput
+
 # -------------------------------------------------------------- #
 
 FROM docker.io/python:3.13-bullseye
