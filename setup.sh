@@ -61,7 +61,6 @@ main() {
     run_uwsgi
   else
     install_geckodriver
-    collect_static
     generate_secret_key
     cleanup
   fi
