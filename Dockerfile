@@ -1,4 +1,4 @@
-FROM docker.io/python:3.13-bullseye as build
+FROM docker.io/python:3.13-bullseye
 
 WORKDIR /usr/src/app
 
