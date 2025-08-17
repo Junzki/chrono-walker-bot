@@ -7,7 +7,6 @@ from .settings import *
 
 DEBUG = config('debug', default=False, cast=bool)
 URL_DEBUG = config('url_debug', default=False, cast=bool)
-URL_PREFIX = config('URL_PREFIX', default='')
 
 ALLOWED_HOSTS = [
     '*'

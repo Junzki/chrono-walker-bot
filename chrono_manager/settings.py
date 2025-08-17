@@ -29,6 +29,8 @@ URL_DEBUG = True
 
 ALLOWED_HOSTS = []
 
+URL_PREFIX = config('URL_PREFIX', default='')
+
 
 # Application definition
 
