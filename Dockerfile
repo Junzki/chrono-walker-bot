@@ -17,7 +17,7 @@ RUN --mount=type=secret,id=r2_access_key_id,env=R2_ACCESS_KEY_ID \
     --mount=type=secret,id=r2_secret_access_key,env=R2_SECRET_ACCESS_KEY \
     --mount=type=secret,id=r2_bucket_name,env=R2_BUCKET_NAME \
     --mount=type=secret,id=r2_account_id,env=R2_ACCOUNT_ID \
-    python manage.py collectstatic --noinput
+    printenv && python manage.py collectstatic --noinput
 
 # Create uwsgi user with home directory and nologin shell
 RUN useradd -m -d /usr/src/app -s /usr/sbin/nologin uwsgi \
