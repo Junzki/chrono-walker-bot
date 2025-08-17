@@ -24,5 +24,5 @@ try:
 except AttributeError as e:
     pass
 
-STATIC_URL = 'https://static.lgtkom.dev/static/'
+STATIC_URL = 'https://static.lgtkom.dev/'
 MEDIA_URL = 'https://static.lgtkom.dev/media/'

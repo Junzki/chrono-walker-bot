@@ -26,10 +26,6 @@ RUN --mount=type=secret,id=r2_access_key_id \
 RUN python manage.py compilemessages && \
     python manage.py collectstatic --noinput
 
-# -------------------------------------------------------------- #
-
-FROM docker.io/python:3.13-bullseye
-
 # Create uwsgi user with home directory and nologin shell
 RUN useradd -m -d /usr/src/app -s /usr/sbin/nologin uwsgi \
     && chown -R uwsgi:uwsgi /usr/src/app
