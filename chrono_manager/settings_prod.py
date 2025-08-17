@@ -11,6 +11,8 @@ ALLOWED_HOSTS = [
 ]
 
 SECRET_KEY = os.environ.get("SECRET_KEY", "SECRET_KEY_TO_REPLACE")
+if SECRET_KEY == 'SECRET_KEY_TO_REPLACE':
+    raise ValueError("Please set the SECRET_KEY environment variable in production.")
 
 DATABASES = {
     'default': {

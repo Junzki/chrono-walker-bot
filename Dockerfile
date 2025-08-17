@@ -13,17 +13,10 @@ RUN apt-get update && \
     pip install uWSGI && \
     bash ./setup.sh
 
-RUN --mount=type=secret,id=r2_access_key_id \
-    --mount=type=secret,id=r2_secret_access_key \
-    --mount=type=secret,id=r2_bucket_name \
-    --mount=type=secret,id=r2_account_id \
-    export R2_ACCESS_KEY_ID=$(cat /run/secrets/r2_access_key_id) && \
-    export R2_SECRET_ACCESS_KEY=$(cat /run/secrets/r2_secret_access_key) && \
-    export R2_BUCKET_NAME=$(cat /run/secrets/r2_bucket_name) && \
-    export R2_ACCOUNT_ID=$(cat /run/secrets/r2_account_id) && \
-    echo "Secrets loaded"
-
-RUN python manage.py compilemessages && \
+RUN --mount=type=secret,id=r2_access_key_id,env=R2_ACCESS_KEY_ID \
+    --mount=type=secret,id=r2_secret_access_key,env=R2_SECRET_ACCESS_KEY \
+    --mount=type=secret,id=r2_bucket_name,env=R2_BUCKET_NAME \
+    --mount=type=secret,id=r2_account_id,env=R2_ACCOUNT_ID \
     python manage.py collectstatic --noinput
 
 # Create uwsgi user with home directory and nologin shell
