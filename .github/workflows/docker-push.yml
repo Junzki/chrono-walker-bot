@@ -48,7 +48,7 @@ jobs:
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/chrono-walker-bot:latest
           secrets: |
-            r2_access_key_id=${{secrets.R2_ACCESS_KEY_ID}}
+            r2_access_key_id=${{ secrets.R2_ACCESS_KEY_ID }}
             r2_secret_access_key=${{ secrets.R2_SECRET_ACCESS_KEY }}
             r2_bucket_name=${{ secrets.R2_BUCKET_NAME }}
             r2_account_id=${{ secrets.R2_ACCOUNT_ID }}

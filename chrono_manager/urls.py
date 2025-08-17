@@ -22,4 +22,14 @@ from django.conf import settings
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('sites/', include('sites.urls')),
-] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+]
+
+if settings.URL_PREFIX:
+    urlpatterns = [
+        path(settings.URL_PREFIX.lstrip('/') + '/', 
+             include((urlpatterns, 'chrono_manager'), 
+                     namespace='chrono_manager'))
+    ]
+
+if settings.URL_DEBUG:
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
